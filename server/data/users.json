@@ -1,0 +1,25 @@
+{
+  "e53ba3bf7bf57e237f0ae281018b3ca2": {
+    "id": "e53ba3bf7bf57e237f0ae281018b3ca2",
+    "username": "ori",
+    "passwordHash": "a5ccb1c538e34663a658b1be28b16455ee5285efb10e6f1d4caba1f69ec9782b",
+    "balance": 0,
+    "history": [],
+    "achievements": [],
+    "stats": {
+      "spins": 0,
+      "wins": 0,
+      "totalWon": 0,
+      "totalBet": 0,
+      "netPL": 0,
+      "maxWin": 0,
+      "currentStreak": 0,
+      "maxStreak": 0
+    },
+    "createdAt": 1776451693992,
+    "lastDailyReward": null,
+    "lowPoint": 0,
+    "nextServerSeed": "6a2c508497b037a45ed53006f25c24d5b342f1b014d75d8489bf7c7cee6f5e01",
+    "nextServerSeedHash": "8ff01880211fdecb1a761b51a81220c5c2c3f4e82c62075996f09869e049b50c"
+  }
+}

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Royal Roulette Casino</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     AUTH SCREEN
+══════════════════════════════════════ -->
+<div id="auth-screen" class="screen active">
+  <div class="auth-bg"></div>
+  <div class="auth-container">
+    <div class="casino-logo">
+      <div class="logo-icon">♠</div>
+      <h1>Royal Roulette</h1>
+      <p class="tagline">The Premier Casino Experience</p>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Register</button>
+      </div>
+
+      <div id="login-form" class="auth-form active">
+        <label class="field-label">Username</label>
+        <input type="text" id="login-username" placeholder="Enter your username" maxlength="20" autocomplete="off">
+        <label class="field-label">Password</label>
+        <input type="password" id="login-password" placeholder="Enter your password" maxlength="50" autocomplete="off">
+        <button id="login-btn" class="btn btn-primary btn-full">Enter Casino →</button>
+        <p class="auth-note">New here? Switch to Register above.</p>
+      </div>
+
+      <div id="register-form" class="auth-form">
+        <label class="field-label">Choose a Username</label>
+        <input type="text" id="register-username" placeholder="Letters, numbers, spaces" maxlength="20" autocomplete="off">
+        <label class="field-label">Choose a Password</label>
+        <input type="password" id="register-password" placeholder="Min 4 characters" maxlength="50" autocomplete="off">
+        <button id="register-btn" class="btn btn-primary btn-full">Join Casino →</button>
+        <p class="auth-note">Start with 1,000 credits!</p>
+      </div>
+
+      <div id="auth-error" class="error-msg"></div>
+    </div>
+
+    <div class="auth-features">
+      <div class="feature-badge">🎰 European Roulette</div>
+      <div class="feature-badge">🔐 Provably Fair</div>
+      <div class="feature-badge">🏆 Achievements</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     GAME SCREEN
+══════════════════════════════════════ -->
+<div id="game-screen" class="screen">
+
+  <!-- Header -->
+  <header id="game-header">
+    <div class="header-brand">
+      <span class="brand-suit">♠</span>
+      <span class="brand-name">Royal Roulette</span>
+    </div>
+
+    <div class="header-balance">
+      <div class="balance-block">
+        <span class="balance-label">BALANCE</span>
+        <span id="balance-display" class="balance-value">1,000</span>
+        <span class="balance-cr">CR</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <span id="header-username" class="username-tag"></span>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+    </div>
+  </header>
+
+  <!-- Main layout: left | center | right -->
+  <main id="game-main">
+
+    <!-- ── Left Panel ── -->
+    <aside id="left-panel" class="side-panel">
+
+      <div class="panel-card">
+        <h3 class="panel-title">YOUR STATS</h3>
+        <div class="stats-grid">
+          <div class="stat-cell">
+            <span class="stat-lbl">Spins</span>
+            <span id="s-spins" class="stat-val">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-lbl">Wins</span>
+            <span id="s-wins" class="stat-val">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-lbl">Win Rate</span>
+            <span id="s-rate" class="stat-val">—</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-lbl">Best Win</span>
+            <span id="s-best" class="stat-val">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-lbl">Streak</span>
+            <span id="s-streak" class="stat-val">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-lbl">Net P/L</span>
+            <span id="s-net" class="stat-val">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h3 class="panel-title">COLOR STATS</h3>
+        <div class="dist-section">
+          <div class="dist-row">
+            <span class="dist-lbl" style="color:#e74c3c">Red</span>
+            <div class="dist-track"><div id="dist-red" class="dist-bar dist-red"></div></div>
+            <span id="cnt-red" class="dist-cnt">0</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-lbl" style="color:#888">Black</span>
+            <div class="dist-track"><div id="dist-black" class="dist-bar dist-black"></div></div>
+            <span id="cnt-black" class="dist-cnt">0</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-lbl" style="color:#2ecc71">Green</span>
+            <div class="dist-track"><div id="dist-green" class="dist-bar dist-green"></div></div>
+            <span id="cnt-green" class="dist-cnt">0</span>
+          </div>
+        </div>
+        <div id="hot-number" class="hot-number-badge"></div>
+      </div>
+
+      <div class="panel-card">
+        <h3 class="panel-title">ACHIEVEMENTS</h3>
+        <div id="achievements-list" class="achievements-list"></div>
+      </div>
+
+    </aside>
+
+    <!-- ── Center Panel ── -->
+    <section id="center-panel">
+
+      <!-- TOP ROW: chips | wheel | spin -->
+      <div id="top-row">
+
+        <!-- Left: chip selector -->
+        <div id="chip-panel">
+          <div class="panel-label">CHIP</div>
+          <div class="custom-chip-wrap">
+            <input id="custom-chip-input" type="number" class="custom-chip-input" placeholder="Custom" min="1">
+            <button id="custom-chip-btn" class="btn-quick">✓</button>
+          </div>
+          <div class="chips-cols">
+            <div class="chips-vertical">
+              <button class="chip c10 active" data-val="10">10</button>
+              <button class="chip c25"   data-val="25">25</button>
+              <button class="chip c50"   data-val="50">50</button>
+              <button class="chip c100"  data-val="100">100</button>
+              <button class="chip c250"  data-val="250">250</button>
+              <button class="chip c500"  data-val="500">500</button>
+            </div>
+            <div class="chips-vertical">
+              <button class="chip c1k"   data-val="1000">1k</button>
+              <button class="chip c2500" data-val="2500">2.5k</button>
+              <button class="chip c5k"   data-val="5000">5k</button>
+              <button class="chip c10k"  data-val="10000">10k</button>
+              <button class="chip c25k"  data-val="25000">25k</button>
+              <button class="chip c50k"  data-val="50000">50k</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center: wheel -->
+        <div id="wheel-wrapper">
+          <canvas id="wheel-canvas"></canvas>
+          <div id="result-overlay" class="result-overlay hidden">
+            <div id="result-number" class="res-num"></div>
+            <div id="result-color"  class="res-color"></div>
+            <div id="result-amount" class="res-amount"></div>
+          </div>
+        </div>
+
+        <!-- Right: bet info + buttons + provably fair -->
+        <div id="spin-controls">
+          <div id="bet-summary">
+            <div class="bet-sum-item">Bet<br><strong id="bet-total">0</strong> <span class="bet-cr">CR</span></div>
+            <div class="bet-sum-item">Max Win<br><strong id="bet-maxwin">0</strong> <span class="bet-cr">CR</span></div>
+          </div>
+
+          <div id="controls-row">
+            <button id="undo-btn"   class="btn btn-outline btn-full">↩ Undo</button>
+            <button id="clear-btn"  class="btn btn-outline btn-full">⟳ Clear</button>
+            <button id="spin-btn"   class="btn btn-spin btn-full">SPIN</button>
+          </div>
+
+          <!-- Auto-spin -->
+          <div id="auto-area">
+            <button id="auto-btn" class="btn btn-outline btn-full">⟳ Auto</button>
+            <div id="auto-config" class="auto-config hidden">
+              <div class="auto-mode-row">
+                <button class="auto-mode-btn active" id="auto-mode-watch" data-mode="watch">👁 Watch</button>
+                <button class="auto-mode-btn"        id="auto-mode-fast"  data-mode="fast">⚡ Fast</button>
+              </div>
+              <div class="auto-field">
+                <label class="auto-lbl">Spins</label>
+                <input id="auto-count" type="number" class="auto-input" value="10" min="1" max="500">
+              </div>
+              <div class="auto-field">
+                <label class="auto-lbl">Stop win</label>
+                <input id="auto-win" type="number" class="auto-input" placeholder="—" min="0">
+              </div>
+              <div class="auto-field">
+                <label class="auto-lbl">Stop loss</label>
+                <input id="auto-loss" type="number" class="auto-input" placeholder="—" min="0">
+              </div>
+              <button id="auto-start" class="btn btn-spin btn-full">START</button>
+            </div>
+            <div id="auto-status" class="auto-status hidden">
+              <span id="auto-remaining"></span>
+              <button id="auto-stop" class="btn btn-danger btn-sm">■ Stop</button>
+            </div>
+          </div>
+
+        </div><!-- /spin-controls -->
+
+      </div><!-- /top-row -->
+
+      <!-- Quick bets -->
+      <div id="quick-bets">
+        <span class="quick-label">Quick:</span>
+        <button class="btn-quick" id="qb-lucky">🎲 Random</button>
+      </div>
+
+      <!-- BOTTOM: betting table centered -->
+      <div id="table-area">
+        <div id="table-scroll">
+          <div id="betting-table"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── Right Panel ── -->
+    <aside id="right-panel" class="side-panel">
+
+      <div class="panel-card">
+        <h3 class="panel-title">LEADERBOARD</h3>
+        <div id="leaderboard" class="leaderboard-list"></div>
+      </div>
+
+      <div class="panel-card">
+        <h3 class="panel-title">BET HISTORY</h3>
+        <div id="hist-body">
+          <div id="hist-list" class="hist-list"></div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div id="fair-panel">
+          <div class="fair-header" id="fair-toggle">
+            <span>🔐 Provably Fair</span>
+            <span class="fair-chevron">▼</span>
+          </div>
+          <div id="fair-body" class="fair-body hidden">
+            <div class="fair-row">
+              <span>Commitment:</span>
+              <span id="fair-hash" class="hash-val">—</span>
+            </div>
+            <div class="fair-row">
+              <span>Client Seed:</span>
+              <input id="client-seed" type="text" placeholder="optional" maxlength="64">
+            </div>
+            <div id="last-proof" class="last-proof hidden">
+              <div class="proof-title">Last Round</div>
+              <div class="fair-row"><span>Server:</span><span id="proof-ss" class="hash-val"></span></div>
+              <div class="fair-row"><span>Client:</span><span id="proof-cs" class="hash-val"></span></div>
+              <div class="fair-row"><span>Hash:</span><span id="proof-hash" class="hash-val"></span></div>
+              <div class="fair-row"><span>Result:</span><span id="proof-res" class="hash-val"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+</div><!-- /game-screen -->
+
+<!-- Bet history detail modal -->
+<div id="hist-modal" class="hist-modal hidden">
+  <div class="hist-modal-backdrop"></div>
+  <div class="hist-modal-box">
+    <div class="hist-modal-header">
+      <div id="hm-result" class="hm-result"></div>
+      <button id="hist-modal-close" class="hm-close">✕</button>
+    </div>
+    <div class="hm-bets-table">
+      <div class="hm-bets-head">
+        <span>Bet</span><span>Amount</span><span>Result</span><span>Payout</span>
+      </div>
+      <div id="hm-bets-body"></div>
+    </div>
+    <div class="hm-summary">
+      <div class="hm-sum-item"><span>Total Bet</span><strong id="hm-total-bet"></strong></div>
+      <div class="hm-sum-item"><span>Payout</span><strong id="hm-total-payout"></strong></div>
+      <div class="hm-sum-item"><span>Net</span><strong id="hm-net"></strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notifications -->
+<div id="toast-container"></div>
+
+<!-- Confetti canvas (full-screen overlay) -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Scripts (order matters) -->
+<script src="js/sounds.js"></script>
+<script src="js/api.js"></script>
+<script src="js/wheel.js"></script>
+<script src="js/table.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
