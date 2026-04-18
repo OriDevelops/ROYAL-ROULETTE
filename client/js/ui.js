@@ -79,7 +79,7 @@ const UI = (() => {
     set('s-wins',   wins);
     set('s-rate',   rate);
     set('s-best',   fmt(stats?.maxWin || 0));
-    set('s-streak', stats?.currentStreak || 0);
+    set('s-streak', stats?.maxStreak || 0);
 
     const netEl = document.getElementById('s-net');
     if (netEl) {
@@ -128,8 +128,8 @@ const UI = (() => {
     lucky_zero:   { icon: '🍀', name: 'Zero Hero',      desc: 'Straight win on 0' },
     lucky_seven:  { icon: '7️⃣', name: 'Lucky Seven',   desc: 'Straight win on 7' },
     comeback:     { icon: '💪', name: 'Comeback Kid',   desc: 'Recover from under 100' },
-    high_society: { icon: '👑', name: 'High Society',   desc: 'Reach 5,000 credits' },
     century:      { icon: '💯', name: 'Century',        desc: 'Complete 100 spins' },
+    big_winner:   { icon: '💎', name: 'Big Winner',     desc: 'Win 1,000+ CR in one spin' },
   };
 
   function renderAchievements(unlockedIds = []) {

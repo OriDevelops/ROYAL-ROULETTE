@@ -155,22 +155,33 @@ document.getElementById('logout-btn').addEventListener('click', _onLogout);
       val = Math.min(val, user.balance);
       customInput.value = val;
       document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      customInput.classList.add('custom-chip-active');
+      document.getElementById('custom-chip-btn').classList.add('custom-chip-active');
       table.setChipValue(val);
     };
-    document.getElementById('custom-chip-btn').addEventListener('click', applyCustomChip);
-    customInput.addEventListener('keydown', e => { if (e.key === 'Enter') applyCustomChip(); });
+    customInput.addEventListener('click', e => e.stopPropagation());
+    customInput.addEventListener('keydown', e => { e.stopPropagation(); if (e.key === 'Enter') applyCustomChip(); });
     customInput.addEventListener('focus', () => customInput.max = user.balance);
+    document.getElementById('custom-chip-btn').addEventListener('click', applyCustomChip);
 
     // Deactivate custom chip when a regular chip is selected
     document.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => customInput.classList.remove('custom-chip-active'));
+      chip.addEventListener('click', () => document.getElementById('custom-chip-btn').classList.remove('custom-chip-active'));
     });
 
     // Quick bets
     document.getElementById('qb-lucky').addEventListener('click', () => {
       const num = Math.floor(Math.random() * 36) + 1;
       table.placeBet('straight', String(num));
+    });
+
+    const multiInput = document.getElementById('qb-multi-input');
+    multiInput.addEventListener('click', e => e.stopPropagation());
+    multiInput.addEventListener('keydown', e => e.stopPropagation());
+    document.getElementById('qb-multi').addEventListener('click', () => {
+      const count = Math.max(1, Math.min(20, parseInt(multiInput.value) || 3));
+      const nums = new Set();
+      while (nums.size < count) nums.add(Math.floor(Math.random() * 37));
+      nums.forEach(n => table.placeBet('straight', String(n)));
     });
 
     // Auto-spin
@@ -466,6 +477,7 @@ document.getElementById('logout-btn').addEventListener('click', _onLogout);
     document.getElementById('game-screen').classList.remove('active');
     document.getElementById('auth-screen').classList.add('active');
     if (ws) { ws.close(); ws = null; }
+    if (typeof Features !== 'undefined') Features.destroy();
     document.getElementById('login-username').value    = '';
     document.getElementById('login-password').value    = '';
     document.getElementById('register-username').value = '';

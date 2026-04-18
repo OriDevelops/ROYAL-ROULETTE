@@ -1105,41 +1105,60 @@ input[type="password"]::placeholder { color: var(--text-dim); }
   padding: 0 2px;
 }
 
-.custom-chip-wrap {
+.qb-multi-wrap { display: flex; }
+
+.qb-multi-wrap .btn-quick {
   display: flex;
-  gap: 6px;
   align-items: center;
+  gap: 4px;
+}
+
+.qb-multi-input {
+  width: 28px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 1px 2px;
+  text-align: center;
+  outline: none;
+}
+.qb-multi-input::-webkit-inner-spin-button,
+.qb-multi-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.qb-multi-input[type=number] { -moz-appearance: textfield; }
+
+.custom-chip-wrap {
   width: 100%;
   margin-top: 2px;
 }
 
-.custom-chip-input {
-  flex: 1;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  border-radius: 50px;
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 700;
-  padding: 7px 10px;
-  outline: none;
-  min-width: 0;
-  text-align: center;
-  transition: var(--transition);
+.custom-chip-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
-.custom-chip-input:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 2px rgba(201,168,76,0.15);
-}
-.custom-chip-input.custom-chip-active {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201,168,76,0.25);
-  color: var(--gold-light);
-  background: rgba(201,168,76,0.08);
-}
-.custom-chip-input::placeholder { color: var(--text-dim); font-weight: 400; }
 
-/* hide number input arrows */
+.custom-chip-btn.custom-chip-active {
+  box-shadow: 0 0 0 2px rgba(201,168,76,0.4), 0 2px 8px rgba(201,168,76,0.3);
+}
+
+.custom-chip-input {
+  width: 60px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 1px 4px;
+  text-align: center;
+  outline: none;
+}
+.custom-chip-input::placeholder { color: rgba(255,255,255,0.4); font-weight: 400; }
 .custom-chip-input::-webkit-inner-spin-button,
 .custom-chip-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .custom-chip-input[type=number] { -moz-appearance: textfield; }
@@ -1526,11 +1545,18 @@ input[type="password"]::placeholder { color: var(--text-dim); }
 }
 
 /* ── Streak Days ──────────────────────────────────── */
-.streak-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
+.daily-streak-badge {
+  display: inline-flex;
+  align-items: center;
   gap: 3px;
-  margin-top: 8px;
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+}
+
+.streak-days {
+  display: none;
 }
 
 .streak-day {

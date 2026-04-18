@@ -212,8 +212,8 @@ const ACHIEVEMENT_DEFS = {
   lucky_zero:   { name: 'Zero Hero',      desc: 'Win with number 0 (Straight)',     icon: '🍀' },
   lucky_seven:  { name: 'Lucky Seven',    desc: 'Win with number 7 (Straight)',     icon: '7️⃣' },
   comeback:     { name: 'Comeback Kid',   desc: 'Recover from under 100 to 500+',  icon: '💪' },
-  high_society: { name: 'High Society',   desc: 'Reach a balance of 5000+',        icon: '👑' },
   century:      { name: 'Century',        desc: 'Complete 100 spins',              icon: '💯' },
+  big_winner:   { name: 'Big Winner',     desc: 'Win 1,000+ CR in a single spin',  icon: '💎' },
 };
 
 function checkAchievements(user, resultNumber, bets, netResult) {
@@ -230,8 +230,8 @@ function checkAchievements(user, resultNumber, bets, netResult) {
   if (resultNumber === 7 && won)                         grant('lucky_seven');
   if (totalBet >= 500)                                   grant('high_roller');
   if (user.stats.currentStreak >= 3)                     grant('hot_streak');
-  if (user.balance >= 5000)                              grant('high_society');
   if (user.stats.spins >= 100)                           grant('century');
+  if (netResult >= 1000)                                 grant('big_winner');
   if (user.lowPoint !== undefined && user.lowPoint < 100 && user.balance >= 500) grant('comeback');
 
   return newAchievements;

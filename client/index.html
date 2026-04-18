@@ -107,7 +107,7 @@
             <span id="s-best" class="stat-val">0</span>
           </div>
           <div class="stat-cell">
-            <span class="stat-lbl">Streak</span>
+            <span class="stat-lbl">Best Streak</span>
             <span id="s-streak" class="stat-val">0</span>
           </div>
           <div class="stat-cell">
@@ -156,8 +156,9 @@
         <div id="chip-panel">
           <div class="panel-label">CHIP</div>
           <div class="custom-chip-wrap">
-            <input id="custom-chip-input" type="number" class="custom-chip-input" placeholder="Custom" min="1">
-            <button id="custom-chip-btn" class="btn-quick">✓</button>
+            <button id="custom-chip-btn" class="btn-quick custom-chip-btn">
+              Custom <input id="custom-chip-input" type="number" class="custom-chip-input" placeholder="0" min="1">
+            </button>
           </div>
           <div class="chips-cols">
             <div class="chips-vertical">
@@ -197,14 +198,14 @@
           </div>
 
           <div id="controls-row">
-            <button id="undo-btn"   class="btn btn-outline btn-full">↩ Undo</button>
-            <button id="clear-btn"  class="btn btn-outline btn-full">⟳ Clear</button>
+            <button id="undo-btn"   class="btn btn-outline btn-full">← Undo</button>
+            <button id="clear-btn"  class="btn btn-outline btn-full">✕ Clear</button>
             <button id="spin-btn"   class="btn btn-spin btn-full">SPIN</button>
           </div>
 
           <!-- Auto-spin -->
           <div id="auto-area">
-            <button id="auto-btn" class="btn btn-outline btn-full">⟳ Auto</button>
+            <button id="auto-btn" class="btn btn-outline btn-full">◎ Auto</button>
             <div id="auto-config" class="auto-config hidden">
               <div class="auto-mode-row">
                 <button class="auto-mode-btn active" id="auto-mode-watch" data-mode="watch">👁 Watch</button>
@@ -238,6 +239,9 @@
       <div id="quick-bets">
         <span class="quick-label">Quick:</span>
         <button class="btn-quick" id="qb-lucky">🎲 Random</button>
+        <div class="qb-multi-wrap">
+          <button class="btn-quick" id="qb-multi">🎲×<input id="qb-multi-input" type="number" class="qb-multi-input" min="1" max="20" value="3"></button>
+        </div>
       </div>
 
       <!-- BOTTOM: betting table centered -->
@@ -270,7 +274,6 @@
           <div class="bonus-timer-track">
             <div id="b5-timer-fill" class="bonus-timer-fill"></div>
           </div>
-          <div id="b5-countdown" class="bonus-countdown"></div>
         </div>
 
         <!-- Daily bonus -->
@@ -278,7 +281,7 @@
           <div class="bonus-row">
             <div class="bonus-info">
               <div class="bonus-name">📅 Daily Bonus</div>
-              <div class="bonus-sub">Streak: <span id="daily-streak">0</span> 🔥</div>
+              <div class="daily-streak-badge"><span id="daily-streak">0</span> day streak 🔥</div>
             </div>
             <button id="daily-btn" class="btn btn-bonus" disabled>
               <span id="daily-btn-text">—</span>
@@ -287,7 +290,6 @@
           <div class="bonus-timer-track">
             <div id="daily-timer-fill" class="bonus-timer-fill" style="background:linear-gradient(90deg,#f39c12,#e67e22)"></div>
           </div>
-          <div id="daily-countdown" class="bonus-countdown"></div>
           <div id="daily-streak-days" class="streak-days"></div>
         </div>
       </div>

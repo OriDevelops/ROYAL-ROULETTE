@@ -78,21 +78,20 @@ const Features = (() => {
   }
 
   function _tickDailyTimer() {
-    const fill     = document.getElementById('daily-timer-fill');
-    const countdown = document.getElementById('daily-countdown');
+    const fill = document.getElementById('daily-timer-fill');
+    const txt  = document.getElementById('daily-btn-text');
+    const btn  = document.getElementById('daily-btn');
     const now      = new Date();
     const midnight = new Date(now); midnight.setHours(24, 0, 0, 0);
     const remain   = Math.max(0, midnight - now);
     const dayMs    = 24 * 60 * 60 * 1000;
     const pct      = 100 - (remain / dayMs) * 100;
     if (fill) fill.style.width = pct + '%';
-    if (countdown && !dailyCanClaim) {
+    if (!dailyCanClaim && txt && btn && btn.disabled) {
       const h = Math.floor(remain / 3600000);
       const m = Math.floor((remain % 3600000) / 60000);
       const s = Math.floor((remain % 60000) / 1000);
-      countdown.textContent = `Next in ${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    } else if (countdown) {
-      countdown.textContent = '';
+      txt.textContent = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
   }
 
@@ -122,16 +121,14 @@ const Features = (() => {
     const fill    = document.getElementById('b5-timer-fill');
     if (!btn || !txt || !fill) return;
 
-    const now      = Date.now();
-    const remain   = Math.max(0, bonus5NextAvail - now);
-    const countdown = document.getElementById('b5-countdown');
+    const now    = Date.now();
+    const remain = Math.max(0, bonus5NextAvail - now);
 
     if (remain <= 0) {
       btn.disabled    = false;
       txt.textContent = `CLAIM +${UI.fmt(bonus5Amount)}`;
       btn.classList.add('bonus-ready');
       fill.style.width = '100%';
-      if (countdown) countdown.textContent = '';
     } else {
       btn.disabled    = true;
       btn.classList.remove('bonus-ready');
@@ -140,7 +137,6 @@ const Features = (() => {
       txt.textContent = `${m}:${String(s).padStart(2, '0')}`;
       const pct = 100 - (remain / bonus5IntervalMs) * 100;
       fill.style.width = pct + '%';
-      if (countdown) countdown.textContent = `Next in ${m}:${String(s).padStart(2, '0')}`;
     }
   }
 
@@ -501,7 +497,11 @@ const Features = (() => {
     const dailyBtn = document.getElementById('daily-btn');
     if (dailyBtn) dailyBtn.addEventListener('click', claimDailyBonus);
 
-    // Start challenges timer immediately
+    // Reset state on each init (e.g. after re-login)
+    bonus5NextAvail = Date.now() + bonus5IntervalMs;
+    dailyCanClaim   = false;
+
+    // Start challenges timer immediately (doesn't need server data)
     _tickChallengesTimer();
     setInterval(_tickChallengesTimer, 1000);
 
@@ -515,8 +515,21 @@ const Features = (() => {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  function destroy() {
+    if (bonus5Timer) { clearInterval(bonus5Timer); bonus5Timer = null; }
+    bonus5NextAvail = 0;
+    dailyCanClaim   = false;
+    const fill  = document.getElementById('b5-timer-fill');
+    const txt   = document.getElementById('b5-btn-text');
+    const btn   = document.getElementById('b5-btn');
+    if (fill) fill.style.width = '0%';
+    if (txt)  txt.textContent  = '—';
+    if (btn)  { btn.disabled = true; btn.classList.remove('bonus-ready'); }
+  }
+
   return {
     init,
+    destroy,
     refreshBonusStatus,
     refreshChallenges,
     refreshAdvancedStats: () => {},
