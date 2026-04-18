@@ -325,6 +325,26 @@ input[type="password"]::placeholder { color: var(--text-dim); }
   text-transform: uppercase;
 }
 
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.panel-title-row .panel-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.challenges-timer {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Stats Grid ───────────────────────────────────── */
 .stats-grid {
   display: grid;
@@ -1408,3 +1428,317 @@ input[type="password"]::placeholder { color: var(--text-dim); }
   .balance-value { font-size: 18px; }
   .chip { width: 38px; height: 38px; font-size: 11px; }
 }
+
+/* ══════════════════════════════════════════════════════
+   NEW FEATURES: Bonuses • Challenges • Charts
+══════════════════════════════════════════════════════ */
+
+/* ── Bonus Card ───────────────────────────────────── */
+.bonus-card {
+  background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+  border: 1px solid rgba(201,168,76,0.25);
+}
+
+.bonus-block {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.bonus-block:last-child { border-bottom: none; }
+.bonus-block:first-of-type { padding-top: 4px; }
+
+.bonus-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.bonus-info { flex: 1; min-width: 0; }
+
+.bonus-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.3px;
+}
+
+.bonus-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.btn-bonus {
+  min-width: 98px;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: var(--bg3);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+}
+
+.btn-bonus:disabled { cursor: not-allowed; opacity: 0.7; }
+
+.btn-bonus.bonus-ready {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: #1a1400;
+  border-color: var(--gold-light);
+  box-shadow: 0 0 12px rgba(240,208,96,0.35), 0 2px 8px rgba(0,0,0,0.4);
+  opacity: 1;
+  animation: bonusPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes bonusPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(240,208,96,0.35), 0 2px 8px rgba(0,0,0,0.4); }
+  50%      { box-shadow: 0 0 20px rgba(240,208,96,0.7),  0 2px 8px rgba(0,0,0,0.4); }
+}
+
+.btn-bonus.bonus-ready:hover { transform: translateY(-1px); }
+
+/* Timer track */
+.bonus-timer-track {
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.bonus-timer-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+  transition: width 0.5s linear;
+}
+
+.bonus-countdown {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Streak Days ──────────────────────────────────── */
+.streak-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.streak-day {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 4px 2px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.streak-day.claimed {
+  background: linear-gradient(135deg, rgba(46,204,113,0.25), rgba(46,204,113,0.1));
+  border-color: rgba(46,204,113,0.5);
+}
+
+.streak-day.next {
+  background: linear-gradient(135deg, rgba(240,208,96,0.3), rgba(240,208,96,0.1));
+  border-color: var(--gold);
+  animation: streakNext 1.8s ease-in-out infinite;
+}
+
+@keyframes streakNext {
+  0%, 100% { box-shadow: 0 0 0 rgba(240,208,96,0.0); }
+  50%      { box-shadow: 0 0 10px rgba(240,208,96,0.5); }
+}
+
+.sd-num {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-bottom: 1px;
+}
+
+.streak-day.claimed .sd-num,
+.streak-day.next .sd-num { color: var(--text); }
+
+.sd-rew {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--gold-light);
+}
+
+/* Streak popup (big win) */
+.streak-popup { background: linear-gradient(135deg, #6a4300, #c9a84c) !important; }
+
+/* ── Challenges ───────────────────────────────────── */
+.challenges-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chal-empty {
+  color: var(--text-dim);
+  font-size: 11px;
+  text-align: center;
+  padding: 12px;
+}
+
+.chal-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 8px 10px;
+  transition: var(--transition);
+}
+
+.chal-item.chal-ready {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, rgba(240,208,96,0.1), rgba(240,208,96,0.02));
+  box-shadow: 0 0 10px rgba(240,208,96,0.15);
+}
+
+.chal-item.chal-claimed {
+  opacity: 0.55;
+  background: rgba(46,204,113,0.06);
+  border-color: rgba(46,204,113,0.3);
+}
+
+.chal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.chal-desc {
+  font-size: 11px;
+  color: var(--text);
+  font-weight: 600;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.chal-reward {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold-light);
+  white-space: nowrap;
+}
+
+.chal-status {
+  font-size: 10px;
+  font-weight: 700;
+  color: #2ecc71;
+  white-space: nowrap;
+}
+
+.btn-claim-chal {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 5px 9px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: #1a1400;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  animation: bonusPulse 1.8s ease-in-out infinite;
+  letter-spacing: 0.3px;
+}
+
+.btn-claim-chal:hover { transform: translateY(-1px); }
+
+.chal-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chal-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.chal-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+  transition: width 0.4s ease;
+  border-radius: 3px;
+}
+
+.chal-item.chal-ready .chal-fill,
+.chal-item.chal-claimed .chal-fill {
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+}
+
+.chal-count {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dim);
+  min-width: 40px;
+  text-align: right;
+}
+
+/* ── Advanced Stats / Charts ──────────────────────── */
+.adv-stats-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.adv-tab {
+  flex: 1;
+  padding: 5px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--bg3);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.adv-tab:hover { color: var(--text); }
+
+.adv-tab.active {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: #1a1400;
+  border-color: var(--gold);
+}
+
+.adv-chart {
+  width: 100%;
+  height: 180px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 6px;
+  display: block;
+}
+
+.adv-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.adv-summary strong { color: var(--text); font-weight: 700; margin-left: 3px; }
+.adv-summary .pos { color: #2ecc71; }
+.adv-summary .neg { color: #e74c3c; }

@@ -53,5 +53,12 @@ const API = (() => {
     liveFeed:    ()                 => get('/live-feed'),
     dailyReward: ()                 => post('/daily-reward'),
     reset:       ()                 => post('/reset'),
+
+    // Bonus & challenges & advanced stats
+    bonusStatus:     ()     => get('/bonus-status'),
+    claimBonus5min:  ()     => post('/bonus-5min'),
+    getChallenges:   ()     => get('/challenges'),
+    claimChallenge:  (id)   => post('/challenges/claim', { id }),
+    advancedStats:   ()     => get('/advanced-stats'),
   };
 })();

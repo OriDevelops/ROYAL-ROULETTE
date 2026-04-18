@@ -252,6 +252,55 @@
     <!-- ── Right Panel ── -->
     <aside id="right-panel" class="side-panel">
 
+      <!-- ═══ BONUSES ═══ -->
+      <div class="panel-card bonus-card">
+        <h3 class="panel-title">🎁 BONUSES</h3>
+
+        <!-- 5-min bonus -->
+        <div class="bonus-block">
+          <div class="bonus-row">
+            <div class="bonus-info">
+              <div class="bonus-name">⏰ Quick Bonus</div>
+              <div class="bonus-sub">+<span id="b5-amount">1,000</span> CR every 5 min</div>
+            </div>
+            <button id="b5-btn" class="btn btn-bonus" disabled>
+              <span id="b5-btn-text">—</span>
+            </button>
+          </div>
+          <div class="bonus-timer-track">
+            <div id="b5-timer-fill" class="bonus-timer-fill"></div>
+          </div>
+          <div id="b5-countdown" class="bonus-countdown"></div>
+        </div>
+
+        <!-- Daily bonus -->
+        <div class="bonus-block">
+          <div class="bonus-row">
+            <div class="bonus-info">
+              <div class="bonus-name">📅 Daily Bonus</div>
+              <div class="bonus-sub">Streak: <span id="daily-streak">0</span> 🔥</div>
+            </div>
+            <button id="daily-btn" class="btn btn-bonus" disabled>
+              <span id="daily-btn-text">—</span>
+            </button>
+          </div>
+          <div class="bonus-timer-track">
+            <div id="daily-timer-fill" class="bonus-timer-fill" style="background:linear-gradient(90deg,#f39c12,#e67e22)"></div>
+          </div>
+          <div id="daily-countdown" class="bonus-countdown"></div>
+          <div id="daily-streak-days" class="streak-days"></div>
+        </div>
+      </div>
+
+      <!-- ═══ DAILY CHALLENGES ═══ -->
+      <div class="panel-card">
+        <div class="panel-title-row">
+          <h3 class="panel-title">🏆 DAILY CHALLENGES</h3>
+          <span id="challenges-timer" class="challenges-timer">—</span>
+        </div>
+        <div id="challenges-list" class="challenges-list"></div>
+      </div>
+
       <div class="panel-card">
         <h3 class="panel-title">LEADERBOARD</h3>
         <div id="leaderboard" class="leaderboard-list"></div>
@@ -330,6 +379,7 @@
 <script src="js/wheel.js"></script>
 <script src="js/table.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/features.js"></script>
 <script src="js/app.js"></script>
 
 </body>

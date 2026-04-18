@@ -193,6 +193,9 @@ document.getElementById('logout-btn').addEventListener('click', _onLogout);
     UI.initHistModal();
     API.history().then(data => UI.loadHistory(data.history)).catch(() => {});
     _connectWS();
+
+    // Initialise new features (bonuses, challenges, charts)
+    if (typeof Features !== 'undefined') Features.init();
   }
 
   // ══════════════════════════════════════════════════════
@@ -267,6 +270,11 @@ document.getElementById('logout-btn').addEventListener('click', _onLogout);
     }
 
     _refreshStats();
+
+    // Update challenges + advanced stats after each spin
+    if (typeof Features !== 'undefined') {
+      Features.updateChallengesFromSpin(data);
+    }
 
     spinning = false;
     _setSpinUI(false);
@@ -356,6 +364,9 @@ document.getElementById('logout-btn').addEventListener('click', _onLogout);
     _setSpinUI(false);
     table.setEnabled(true);
     _refreshStats();
+    if (typeof Features !== 'undefined') {
+      Features.refreshChallenges();
+    }
   }
 
   function _stopAutoSpin(reason) {
