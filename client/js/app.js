@@ -236,7 +236,11 @@ document.getElementById('logout-btn').addEventListener('click', _onLogout);
 
     try {
       const data = await API.spin(bets, clientSeed);
-      wheel.spin(data.result.number, () => _onSpinComplete(data));
+      if (typeof Sounds !== 'undefined') Sounds.wheelSpin();
+      wheel.spin(data.result.number, () => {
+        if (typeof Sounds !== 'undefined') Sounds.stopSpin();
+        _onSpinComplete(data);
+      });
     } catch (e) {
       UI.toast(e.message || 'Spin failed', 'error');
       spinning = false;

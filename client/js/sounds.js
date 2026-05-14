@@ -54,50 +54,71 @@ const Sounds = (() => {
     osc.stop(now + 0.1);
   }
 
-  // ── Wheel Spin (6 second rolling sound) ─────────────
-  let spinSource = null;
+  // ── Wheel Spin (mechanical clicks like real roulette ball) ──
+  let spinIntervals = [];
 
   function wheelSpin() {
     if (!ctx) return;
     resume();
     stopSpin();
 
-    const now      = ctx.currentTime;
-    const duration = 6.5;
-    const mg       = masterGain();
+    const totalDuration = 6.5;  // seconds
+    const startInterval = 0.045; // fast clicks at start
+    const endInterval   = 0.38;  // slow clicks at end
 
-    // White noise buffer
-    const bufLen = ctx.sampleRate * duration;
-    const buf    = ctx.createBuffer(1, bufLen, ctx.sampleRate);
-    const data   = buf.getChannelData(0);
-    for (let i = 0; i < bufLen; i++) data[i] = (Math.random() * 2 - 1);
+    let elapsed = 0;
+    let clickIndex = 0;
 
-    spinSource = ctx.createBufferSource();
-    spinSource.buffer = buf;
+    function scheduleClicks() {
+      if (elapsed >= totalDuration) return;
 
-    // Band-pass filter: high-frequency click at start → lower at end
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(1800, now);
-    filter.frequency.exponentialRampToValueAtTime(280, now + duration);
-    filter.Q.value = 5;
+      // interval grows exponentially (ball slows down)
+      const t = elapsed / totalDuration;
+      const interval = startInterval * Math.pow(endInterval / startInterval, t);
 
+      const clickTime = ctx.currentTime + 0.01;
+      _playClick(clickTime, t);
+
+      elapsed += interval;
+      clickIndex++;
+
+      const id = setTimeout(scheduleClicks, interval * 1000);
+      spinIntervals.push(id);
+    }
+
+    scheduleClicks();
+  }
+
+  function _playClick(when, progress) {
+    if (!ctx) return;
+    const mg   = masterGain();
+
+    // Pitch drops as wheel slows
+    const freq = 1400 - progress * 900;
+
+    const osc  = ctx.createOscillator();
     const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0, now);
-    gain.gain.linearRampToValueAtTime(0.35, now + 0.4);
-    gain.gain.linearRampToValueAtTime(0.3, now + duration - 1.2);
-    gain.gain.linearRampToValueAtTime(0, now + duration);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, when);
+    osc.frequency.exponentialRampToValueAtTime(freq * 0.5, when + 0.025);
 
-    spinSource.connect(filter);
-    filter.connect(gain);
+    // Volume rises slightly mid-spin, then fades at end
+    const vol = progress < 0.8
+      ? 0.18 + progress * 0.05
+      : 0.22 * (1 - (progress - 0.8) / 0.2);
+
+    gain.gain.setValueAtTime(vol, when);
+    gain.gain.exponentialRampToValueAtTime(0.001, when + 0.04);
+
+    osc.connect(gain);
     gain.connect(mg);
-
-    spinSource.start(now);
-    spinSource.stop(now + duration);
+    osc.start(when);
+    osc.stop(when + 0.05);
   }
 
   function stopSpin() {
-    try { if (spinSource) { spinSource.stop(); spinSource = null; } } catch (_) {}
+    spinIntervals.forEach(id => clearTimeout(id));
+    spinIntervals = [];
   }
 
   // ── Win Fanfare ──────────────────────────────────────
